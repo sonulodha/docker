@@ -29,8 +29,20 @@ services:
 When deploying this setup, docker-compose maps the nextcloud container port 80 to port 8080 of the host 
 as specified in the compose file.
 Deploy with docker-compose
+#install docker and docker-compose
+#yum install docker -y 
+#systemctl start docker
+#systemctl enable docker
+#sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+Next, set the permissions to make the binary executable:
+#sudo chmod +x /usr/local/bin/docker-compose
+hen, verify that the installation was successful by checking the version:
+Create symlink 
+#sudo ln -s /usr/local/bin/docker-compose /bin/docker-compose
 
-$ docker$ compose up -d
+docker-compose --version
+
+$ docker-compose up -d
 
 
 Expected result
