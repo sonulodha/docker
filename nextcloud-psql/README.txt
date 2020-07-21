@@ -1,3 +1,8 @@
+Nextcloud is a suite of client-server software for creating and using file hosting services.
+Nextcloud is free and open-source, which means that anyone is allowed to install and operate 
+it on their own private server devices
+
+
 Nextcloud with Postgres database
 
 This example defines one of the base setups for Nextcloud. More details on how to further customize the 
