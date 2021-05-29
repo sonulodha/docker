@@ -1,0 +1,38 @@
+part 1
+
+
+1. create container with following config
+	- name the container "demo-app"
+        - run the container in deamon mode
+        - publish the port as 0.0.0.0/0:9090->80
+	- use mitrasonu/demo-app as a base image
+
+2. create container with following config
+
+	- set container name as myDB
+        - run the container in daemon
+        - publish the port as 0.0.0.0/0:3307->3306
+        - initialize enviornmenr variable:
+                MYSQL_ROOT_PASSWORD=r00TPa55word
+		MYSQL_DATABASE=testDB
+		MYSQL_USER=lisa
+		MYSQL_PASSWORD=Pa55word
+	Download mysql dump: from 
+	Restore Database (testDB)
+
+
+
+3. create container using docker file with following config
+
+	- use centos as a base image
+	- set container name as user
+	- install and start "ssh" in the container
+        - expose port 22 of the container
+        - make user "test" in the container
+        - set user's password as "userpass"
+	- set new image name as my-ssh
+  
+  4. Deploy using docker swarm ( Single node Cluster only master )
+  
+  https://github.com/sonulodha/docker-compose/tree/master/nextcloud-psql
+  

@@ -1,0 +1,320 @@
+Clone
+git clone https://github.com/sonulodhagithub/webapp.git
+#Docker file
+
+FROM httpd
+LABEL description="Continuous Integration, Continuous Delivery"
+MAINTAINER DevOps Interns
+EXPOSE 80
+COPY ./webapp /usr/local/apache2/htdocs/
+
+
+#docker build -t mitrasonu/app1 .
+#docker login
+#docker push mitrasonu/app1
+
+#docker build -t mitrasonu/app2 .
+#docker push mitrasonu/app2
+
+
+!/bin/bash
+Docker Swarm
+--------------------------------------
+1. What is Docker Swarm
+2. Why to use it
+3. How to create and manage Docker Swarm
+4. Create service on docker swarm
+5. Scalling services up and down (Horizontal)
+6. Features
+
+=========================================================================
+What is DockerSwarm
+=========================================================================
+A swarm is a group of machines that are running Docker and joined into a cluster.
+Docker Swarm is a clustering and scheduling tool for Docker containers.
+WIth Swarm, IT administrators and developers can establish and manage a cluster of Docker nodes asx a single virtual system.
+
+Docker Swarm is a tool for Container Orchestration.
+
+Example:
+        You have 200 Containers
+You need to do:
+        - Health check
+        - Ensure all containers are up on every system
+        - Scaling the containers up or down depending on the load
+        - Adding updates /changes to all the containers
+
+#Orchestration - Managing and controlling multiple docker containers as a single service
+#Tools available - Docker Swarm, Kubernetes, Apache Measos
+
+
+=========================================================================================
+        Install docker swarm
+=========================================================================================
+========================================================================================================
+                Create DOcker Machines (Manager and Worker )
+========================================================================================================
+                                                                                                                  
+Pre-requisites
+
+In this case, we will need the following:
+
+
+Centos -1       manager                 docker  install
+Centos -2       worker1                 docker  install
+(standalone (master and worker both one machine_
+
+=====================
+yum install install docker
+systemctl start docker
+systemctl enable docker
+inti-- docker swarm
+#docker swarm init
+#manager
+docker swarm init
+docker swarm join-token worker (output copy and paste worker node)
+docker node ls
+docker service ls
+
+#worker 
+(token paste)
+
+
+========================================================================================================
+pull docker images from registry
+#docker pull mitrasonu/rgpvapp:1
+
+========================================================================================================
+Create services
+========================================================================================================
+# (port forward -p [hostport:containerport]
+#docker service create --replicas 3 -p 7070:80 --name result mitrasonu/rgpvapp:1
+#docker service ls
+#docker service ps servicename
+#docker node ps app
+
+
+========================================
+Scal up and down services
+========================================
+#manager
+#docker service scale servicename=6
+#docker services ls
+#docker service scale result=6
+#docker service ls
+#docker service scale result=2
+
+========================================
+upgrade and rollback services
+========================================
+#manager
+docker service ls
+docker node ps
+docker service update --image mitrasonu/rgpvapp:2 result
+docker node ps
+dokcer service ls
+dokcer service rollback mitrasonu/rgpvapp:1
+                                                                                                                            60,1          Bot
+
+
+#Container Orachstration:
+Container Orachestration is the process of deploying and maintaining large number of containers and services 
+for the application .
+It is performed to control and automate tasks like:
+ Deployment of containers
+ scaling 
+ resource allocation 
+ Load balancing
+ Health Monitoring
+
+--------------
+docker swarm
+ docker swarm is a container orchestration tool part of the docker engine. With it, developers and IT administrators
+can deploy and manage a cluster of docker nodess as a single virtual system.
+
+
+Service:
+	Services defines the tasks that needs to be executed on the manager and worker nodes.
+Tasks:
+   	tasks refer to the docker containers that excute the commands defined in the service.
+
+Manager:
+	Tthe manager node is responsible for:
+	accesspting commands and creating service ojbects
+ 	allocating IP address to tasks
+	Assigning tasks to nodes
+	instructing a worker  to run a task
+
+Worker Node:
+	worker nodes are responsible for checking assigned tasks and executing containers.
+
+--------
+Docker service
+	A service is used to deploy an application image.
+	cmd
+
+docker service create --replics  --public port   image-name
+docker service ls
+docker node ls
+docker service ps
+docker service logs
+docker service inspect
+docker service rm 
+docker service scall
+
+  198  docker service create --replicas 3 --name abc --update-delay 96h  redis:3.0.4
+  199  docker service ls
+  200  docker service update  --image redis:3.0.6 abc
+       docker service rollback abc
+       
+
+========
+
+
+docker stack deploy
+
+docker stack function makes use of YAML files to deploy multiple services at onces.
+
+docker stack deploy --compose-file docker-compose.yml stack1_name
+
+
+vim docker-compose.yml
+
+   version: '3.7'
+services:
+  drive:
+    image: nextcloud:apache
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PASSWORD=drive@123
+      - POSTGRES_DB=drivedb
+      - POSTGRES_USER=nextcloud
+    ports:
+      - 80:80
+    restart: always
+    volumes:
+      - drive_data:/var/www/html
+  db:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_PASSWORD=drive@123
+      - POSTGRES_DB=drivedb
+      - POSTGRES_USER=nextcloud
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:
+  drive_data:
+
+
+================================
+Draining Nodes ( drain status prevents the nodes for receiving new tasks.	
+	docker node update --availability drain worker1
+
+
+	docker node update --availability active worker1
+
+
+
+
+
+
+
+
+
+
+docker network (swarm)
+
+create a new network 
+docker network create --driver overlay my-net
+docker service create --replicas 3 --network my-net --name abc3 httpd
+
+
+
+	docker service update --network-add my-net2 abc3
+
+
+storage
+
+--mounts
+docker service create --mount src=volume-name,dest=cont-path --name abc4 httpd
+
+docker service create --mount type=bind,src=host-path,dest=cont-path --name abc4 httpd
+
+
+
+
+	1. Docker Swarm : Architecture
+	2. Docker Swarm : installation 
+        3. Docker Swarm : ( add / remove Node from the docker swarm )
+	4. Docker Swarm : Swarm Node Promote/ Demote
+	5. Docker Swarm : swarm Visulizer
+	6. Docker Swarm : swarm create / ls / logs /inspect services
+	7. Docker Swarm : update / rollback and scale up/Down Services / Port mapping
+	8. Docker Swarm : replicated / global services 
+	9. Docker Swarm : swarm node availability
+       10. Docker Swarm :  Label and Constraint
+	
+
+==========================================================================
+4. Docker Swarm : Swarm Node Promote/ Demote
+
+#docker node promote worker1
+#docker node promote worker2
+
+#docker node demote worker1
+#docker node demote worker2
+
+
+
+==========================================================================
+10. Docker Swarm :  Label and Constraint
+	There are two types to assign labels
+		I  Node 
+		II Engine 
+docker node 
+docker service create --replicas=1 --constraint="node.role==manager" httpd	
+docker service create --replicas=2 --constraint="node.role==worker" httpd
+docker node update --help |grep label
+
+docker node update --label-add="cpu=amd" worker1
+docker node update --label-add="gpu=true" worker1
+docker node update --label-add list
+docker service create --replicas=2 --constraint="node.labels.cpu==amd"  httpd
+docker services ls
+docker service ps service-name
+=========
+worker: node
+
+#cd /etc/docker
+#cat > dameon.json
+	{
+		"labels" : ["name=mlops"]
+	}
+
+#systemctl restart docker
+#docker service create --replicas=2 --constraint="engine.labels.key==value"  httpd
+
+========================================================================================
+9. Docker Swarm : swarm node availability
+			active | pause | drain		
+
+		
+#docker swarm update --help |grep avai
+#
+
+=========================================================================================
+Docker secret
+#docker secret create dbpass - 
+#docker secret ls
+#docker inspect  dbpass
+----
+#echo "Pass55word" > passwd  
+#docker secret  create dbpass2 passwd
+#docker secret ls
+#docker service create   --replicas=1 --secret dbpass -e MYSQL_ROOT_PASSWORD_FILE=/run/secrets/dbpass mysql
+
+
+replicated or global services
+docker service create --name sonu --mode global httpd
